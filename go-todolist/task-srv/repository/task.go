@@ -4,6 +4,7 @@ import (
 	"context"
 	pb "go-todolist/task-srv/proto/task"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"time"
 )
@@ -34,11 +35,11 @@ type TaskRepositoryImpl struct {
 }
 
 // 定义默认的操作表
-func (repo TaskRepositoryImpl) collection() *mongo.Collection {
+func (repo *TaskRepositoryImpl) collection() *mongo.Collection {
 	return repo.Conn.Database(DbName).Collection(TaskCollection)
 }
 
-func (repo TaskRepositoryImpl) InsertOnce(ctx context.Context, task *pb.Task) error {
+func (repo *TaskRepositoryImpl) InsertOnce(ctx context.Context, task *pb.Task) error {
 	_, err := repo.collection().InsertOne(ctx, bson.M{
 		"body":       task.Body,
 		"startTime":  task.StartTime,
@@ -48,3 +49,13 @@ func (repo TaskRepositoryImpl) InsertOnce(ctx context.Context, task *pb.Task) er
 	})
 	return err
 }
+
+func (repo *TaskRepositoryImpl) Delete(ctx context.Context, id string) error {
+	oid, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+	_, err = repo.collection().DeleteOne(ctx, bson.M{"_id": oid})
+	return err
+}
+
