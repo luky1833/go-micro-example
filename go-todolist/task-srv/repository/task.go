@@ -25,11 +25,11 @@ const (
 // 定义数据库基本的增删改查的操作
 type TaskRepository interface {
 	InsertOnce(ctx context.Context, task *pb.Task) error
-	Delete(ctx context.Context, task *pb.Task) error
+	Delete(ctx context.Context, id string) error
 	Modify(ctx context.Context, task *pb.Task) error
 	Finished(ctx context.Context, task *pb.Task) error
-	Count(ctx context.Context, task *pb.Task) error
-	Search(ctx context.Context, task *pb.Task) error
+	Count(ctx context.Context, keyword string) (int64, error)
+	Search(ctx context.Context, request *pb.SearchRequest) ([]*pb.Task, error)
 }
 
 // 数据库连接实现类
@@ -48,7 +48,7 @@ func (repo *TaskRepositoryImpl) InsertOnce(ctx context.Context, task *pb.Task) e
 		"body":       task.Body,
 		"startTime":  task.StartTime,
 		"endTime":    task.EndTime,
-		"isFinished": task.IsFinished,
+		"isFinished": Unfinished,
 		"createTime": time.Now().Unix(),
 	})
 	return err
@@ -98,7 +98,7 @@ func (repo *TaskRepositoryImpl) Finished(ctx context.Context, task *pb.Task) err
 func (repo *TaskRepositoryImpl) Count(ctx context.Context, keyword string) (int64, error) {
 	filter := bson.M{}
 	if keyword != "" && strings.TrimSpace(keyword) != "" {
-		filter = bson.M{"body": bson.M{"&regex": keyword}}
+		filter = bson.M{"body": bson.M{"$regex": keyword}}
 	}
 	count, err := repo.collection().CountDocuments(ctx, filter)
 	return count, err
@@ -109,7 +109,7 @@ func (repo *TaskRepositoryImpl) Search(ctx context.Context, request *pb.SearchRe
 	if request.Keyword != "" && strings.TrimSpace(request.Keyword) != "" {
 		filter = bson.M{"body": bson.M{"$regex": request.Keyword}}
 	}
-	cousor, err := repo.collection().Find(
+	cursor, err := repo.collection().Find(
 		ctx,
 		filter,
 		options.Find().SetSkip((request.PageCode-1)*request.PageSize),
@@ -119,7 +119,7 @@ func (repo *TaskRepositoryImpl) Search(ctx context.Context, request *pb.SearchRe
 		return nil, errors.WithMessage(err, "search mongo")
 	}
 	var rows []*pb.Task
-	if err := cousor.All(ctx, &rows); err != nil {
+	if err := cursor.All(ctx, &rows); err != nil {
 		return nil, errors.WithMessage(err, "parse data")
 	}
 	return rows, nil
