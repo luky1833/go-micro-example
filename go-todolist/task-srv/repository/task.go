@@ -2,10 +2,14 @@ package repository
 
 import (
 	"context"
+	"github.com/pkg/errors"
 	pb "go-todolist/task-srv/proto/task"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+	"log"
+	"strings"
 	"time"
 )
 
@@ -59,3 +63,64 @@ func (repo *TaskRepositoryImpl) Delete(ctx context.Context, id string) error {
 	return err
 }
 
+func (repo *TaskRepositoryImpl) Modify(ctx context.Context, task *pb.Task) error {
+	id, err := primitive.ObjectIDFromHex(task.Id)
+	if err != nil {
+		return err
+	}
+	_, err = repo.collection().UpdateOne(ctx, bson.M{"_id": id}, bson.M{"$set": bson.M{
+		"body":       task.Body,
+		"startTime":  task.StartTime,
+		"endTime":    task.EndTime,
+		"updateTime": time.Now().Unix(),
+	}})
+	return err
+}
+
+func (repo *TaskRepositoryImpl) Finished(ctx context.Context, task *pb.Task) error {
+	id, err := primitive.ObjectIDFromHex(task.Id)
+	if err != nil {
+		return err
+	}
+	now := time.Now().Unix()
+	update := bson.M{
+		"isFinished": int32(task.IsFinished),
+		"updateTime": now,
+	}
+	if task.IsFinished == Finished {
+		update["finishTime"] = now
+	}
+	log.Print(task)
+	log.Println(update)
+	_, err = repo.collection().UpdateOne(ctx, bson.M{"_id": id}, bson.M{"$set": update})
+	return err
+}
+func (repo *TaskRepositoryImpl) Count(ctx context.Context, keyword string) (int64, error) {
+	filter := bson.M{}
+	if keyword != "" && strings.TrimSpace(keyword) != "" {
+		filter = bson.M{"body": bson.M{"&regex": keyword}}
+	}
+	count, err := repo.collection().CountDocuments(ctx, filter)
+	return count, err
+}
+
+func (repo *TaskRepositoryImpl) Search(ctx context.Context, request *pb.SearchRequest) ([]*pb.Task, error) {
+	filter := bson.M{}
+	if request.Keyword != "" && strings.TrimSpace(request.Keyword) != "" {
+		filter = bson.M{"body": bson.M{"$regex": request.Keyword}}
+	}
+	cousor, err := repo.collection().Find(
+		ctx,
+		filter,
+		options.Find().SetSkip((request.PageCode-1)*request.PageSize),
+		options.Find().SetLimit(request.PageSize),
+		options.Find().SetSort(bson.M{request.SortBy: request.Order}))
+	if err != nil {
+		return nil, errors.WithMessage(err, "search mongo")
+	}
+	var rows []*pb.Task
+	if err := cousor.All(ctx, &rows); err != nil {
+		return nil, errors.WithMessage(err, "parse data")
+	}
+	return rows, nil
+}
