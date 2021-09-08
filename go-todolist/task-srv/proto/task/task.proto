@@ -12,35 +12,35 @@ service TaskService{
   rpc Delete(Task)returns(EditResponse){}
   rpc Modify(Task)returns(EditResponse){}
   rpc Finished(Task)returns(EditResponse){}
-  rpc Search(Task)returns(EditResponse){}
+  rpc Search(SearchRequest)returns(SearchResponse){}
 }
 // 下面是消息体message的定义,可以暂时的理解为go中的struct,
 // 其中的1,2,3 .. 是每一个变量唯一的编码
 message Task{
   //每条任务的id:本项目中对应mongodb记录的"_id"字段
-  //@inject_tag:bson:"_id"
-  string id = 1;
+  //@inject_tag: bson:"_id" form:"id"
+  string id         = 1;
   // 任务主体文字
-  //@inject_tag:bson:"body"
-  string body = 2;
+  //@inject_tag:bson:"body" form:"body"
+  string body       = 2;
   //用户设定的任务开始时间戳
   //@inject_tag:bson:"startTime"
-  int64 startTime = 3;
+  int64  startTime  = 3;
   //用户设定的任务截止时间戳
   //@inject_tag:bson:"endTime"
-  int64 endTime = 4;
+  int64  endTime    = 4;
   //任务是否已经完成
   //@inject_tag:bson:"isFinished"
-  int32 isFinished = 5;
+  int32  isFinished = 5;
   //用户实际完成时间戳
   //@inject_tag:bson:"finishTime"
-  int64 finishTime = 6;
+  int64  finishTime = 6;
   //任务创建时间
   //@inject_tag:bson:"createTime"
   int64  createTime = 7;
   //任务修改时间
   //@inject_tag:bson:"updateTime"
-  int64 updateTime = 8;
+  int64  updateTime = 8;
 }
 //增删改查返回参数接口
 message EditResponse{
@@ -50,27 +50,27 @@ message EditResponse{
 //查询接口的参数
 message SearchRequest{
   //分页查询页码,从第一页开始
-  int64 pageSize = 1;
+  int64  pageSize = 1;
   //分页查询的每页的数量,默认20
   int64  pageCode = 2;
   //排序字段
-  string sortBy = 3;
+  string sortBy   = 3;
   //顺序 -1降序,1升序
-  string order = 4;
+  int32  order    = 4;
   //关键字模糊查询任务body字段
-  string keyword = 5;
+  string keyword  = 5;
 }
 message SearchResponse{
   //分页查询页码,从第一页开始
-  int64 pageSize = 1;
+  int64         pageSize = 1;
   //分页查询的每页的数量,默认20
-  int64  pageCode = 2;
+  int64         pageCode = 2;
   //排序字段
-  string sortBy = 3;
+  string        sortBy   = 3;
   //顺序 -1降序,1升序
-  string order = 4;
+  int32         order    = 4;
   //关键字模糊查询任务body字段
-  string keyword = 5;
+  string        keyword  = 5;
   //具体数据,这里repeated 表示可以出现多条,类似go中的slice
-  repeated Task rows = 6;
+  repeated Task rows     = 6;
 }

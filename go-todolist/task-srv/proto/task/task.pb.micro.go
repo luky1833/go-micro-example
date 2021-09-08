@@ -48,7 +48,7 @@ type TaskService interface {
 	Delete(ctx context.Context, in *Task, opts ...client.CallOption) (*EditResponse, error)
 	Modify(ctx context.Context, in *Task, opts ...client.CallOption) (*EditResponse, error)
 	Finished(ctx context.Context, in *Task, opts ...client.CallOption) (*EditResponse, error)
-	Search(ctx context.Context, in *Task, opts ...client.CallOption) (*EditResponse, error)
+	Search(ctx context.Context, in *SearchRequest, opts ...client.CallOption) (*SearchResponse, error)
 }
 
 type taskService struct {
@@ -103,9 +103,9 @@ func (c *taskService) Finished(ctx context.Context, in *Task, opts ...client.Cal
 	return out, nil
 }
 
-func (c *taskService) Search(ctx context.Context, in *Task, opts ...client.CallOption) (*EditResponse, error) {
+func (c *taskService) Search(ctx context.Context, in *SearchRequest, opts ...client.CallOption) (*SearchResponse, error) {
 	req := c.c.NewRequest(c.name, "TaskService.Search", in)
-	out := new(EditResponse)
+	out := new(SearchResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -120,7 +120,7 @@ type TaskServiceHandler interface {
 	Delete(context.Context, *Task, *EditResponse) error
 	Modify(context.Context, *Task, *EditResponse) error
 	Finished(context.Context, *Task, *EditResponse) error
-	Search(context.Context, *Task, *EditResponse) error
+	Search(context.Context, *SearchRequest, *SearchResponse) error
 }
 
 func RegisterTaskServiceHandler(s server.Server, hdlr TaskServiceHandler, opts ...server.HandlerOption) error {
@@ -129,7 +129,7 @@ func RegisterTaskServiceHandler(s server.Server, hdlr TaskServiceHandler, opts .
 		Delete(ctx context.Context, in *Task, out *EditResponse) error
 		Modify(ctx context.Context, in *Task, out *EditResponse) error
 		Finished(ctx context.Context, in *Task, out *EditResponse) error
-		Search(ctx context.Context, in *Task, out *EditResponse) error
+		Search(ctx context.Context, in *SearchRequest, out *SearchResponse) error
 	}
 	type TaskService struct {
 		taskService
@@ -158,6 +158,6 @@ func (h *taskServiceHandler) Finished(ctx context.Context, in *Task, out *EditRe
 	return h.TaskServiceHandler.Finished(ctx, in, out)
 }
 
-func (h *taskServiceHandler) Search(ctx context.Context, in *Task, out *EditResponse) error {
+func (h *taskServiceHandler) Search(ctx context.Context, in *SearchRequest, out *SearchResponse) error {
 	return h.TaskServiceHandler.Search(ctx, in, out)
 }
