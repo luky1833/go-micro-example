@@ -32,29 +32,29 @@ type Task struct {
 	unknownFields protoimpl.UnknownFields
 
 	//每条任务的id:本项目中对应mongodb记录的"_id"字段
-	//@inject_tag:bson:"_id" form:"id"
-	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// @inject_tag: bson:"_id"
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" bson:"_id"`
 	// 任务主体文字
-	//@inject_tag:bson:"body" form:"body"
-	Body string `protobuf:"bytes,2,opt,name=body,proto3" json:"body,omitempty"`
+	// @inject_tag: bson:"body" form:"body"
+	Body string `protobuf:"bytes,2,opt,name=body,proto3" json:"body,omitempty" bson:"body" form:"body"`
 	//用户设定的任务开始时间戳
-	//@inject_tag:bson:"startTime"
-	StartTime int64 `protobuf:"varint,3,opt,name=startTime,proto3" json:"startTime,omitempty"`
+	// @inject_tag: bson:"startTime"
+	StartTime int64 `protobuf:"varint,3,opt,name=startTime,proto3" json:"startTime,omitempty" bson:"startTime"`
 	//用户设定的任务截止时间戳
-	//@inject_tag:bson:"endTime"
-	EndTime int64 `protobuf:"varint,4,opt,name=endTime,proto3" json:"endTime,omitempty"`
+	// @inject_tag: bson:"endTime"
+	EndTime int64 `protobuf:"varint,4,opt,name=endTime,proto3" json:"endTime,omitempty" bson:"endTime"`
 	//任务是否已经完成
-	//@inject_tag:bson:"isFinished"
-	IsFinished int32 `protobuf:"varint,5,opt,name=isFinished,proto3" json:"isFinished,omitempty"`
+	// @inject_tag: bson:"isFinished"
+	IsFinished int32 `protobuf:"varint,5,opt,name=isFinished,proto3" json:"isFinished,omitempty" bson:"isFinished"`
 	//用户实际完成时间戳
-	//@inject_tag:bson:"finishTime"
-	FinishTime int64 `protobuf:"varint,6,opt,name=finishTime,proto3" json:"finishTime,omitempty"`
+	// @inject_tag: bson:"finishTime"
+	FinishTime int64 `protobuf:"varint,6,opt,name=finishTime,proto3" json:"finishTime,omitempty" bson:"finishTime"`
 	//任务创建时间
-	//@inject_tag:bson:"createTime"
-	CreateTime int64 `protobuf:"varint,7,opt,name=createTime,proto3" json:"createTime,omitempty"`
+	// @inject_tag: bson:"createTime"
+	CreateTime int64 `protobuf:"varint,7,opt,name=createTime,proto3" json:"createTime,omitempty" bson:"createTime"`
 	//任务修改时间
-	//@inject_tag:bson:"updateTime"
-	UpdateTime int64 `protobuf:"varint,8,opt,name=updateTime,proto3" json:"updateTime,omitempty"`
+	// @inject_tag: bson:"updateTime"
+	UpdateTime int64 `protobuf:"varint,8,opt,name=updateTime,proto3" json:"updateTime,omitempty" bson:"updateTime"`
 }
 
 func (x *Task) Reset() {

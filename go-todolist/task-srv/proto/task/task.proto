@@ -18,28 +18,28 @@ service TaskService{
 // 其中的1,2,3 .. 是每一个变量唯一的编码
 message Task{
   //每条任务的id:本项目中对应mongodb记录的"_id"字段
-  //@inject_tag: bson:"_id" form:"id"
+  // @inject_tag: bson:"_id"
   string id         = 1;
   // 任务主体文字
-  //@inject_tag:bson:"body" form:"body"
+  // @inject_tag: bson:"body" form:"body"
   string body       = 2;
   //用户设定的任务开始时间戳
-  //@inject_tag:bson:"startTime"
+  // @inject_tag: bson:"startTime"
   int64  startTime  = 3;
   //用户设定的任务截止时间戳
-  //@inject_tag:bson:"endTime"
+  // @inject_tag: bson:"endTime"
   int64  endTime    = 4;
   //任务是否已经完成
-  //@inject_tag:bson:"isFinished"
+  // @inject_tag: bson:"isFinished"
   int32  isFinished = 5;
   //用户实际完成时间戳
-  //@inject_tag:bson:"finishTime"
+  // @inject_tag: bson:"finishTime"
   int64  finishTime = 6;
   //任务创建时间
-  //@inject_tag:bson:"createTime"
+  // @inject_tag: bson:"createTime"
   int64  createTime = 7;
   //任务修改时间
-  //@inject_tag:bson:"updateTime"
+  // @inject_tag: bson:"updateTime"
   int64  updateTime = 8;
 }
 //增删改查返回参数接口
