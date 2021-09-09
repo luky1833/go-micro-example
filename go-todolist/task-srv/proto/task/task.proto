@@ -41,6 +41,9 @@ message Task{
   //任务修改时间
   // @inject_tag: bson:"updateTime"
   int64  updateTime = 8;
+  //用户ID
+  // @inject_tag: bson:"userId"
+  string userId     = 9;
 }
 //增删改查返回参数接口
 message EditResponse{

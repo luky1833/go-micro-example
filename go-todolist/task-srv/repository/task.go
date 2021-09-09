@@ -30,6 +30,8 @@ type TaskRepository interface {
 	Finished(ctx context.Context, task *pb.Task) error
 	Count(ctx context.Context, keyword string) (int64, error)
 	Search(ctx context.Context, request *pb.SearchRequest) ([]*pb.Task, error)
+	// 接口新增方法
+	FindById(ctx context.Context, id string) (*pb.Task, error)
 }
 
 // 数据库连接实现类
@@ -50,6 +52,7 @@ func (repo *TaskRepositoryImpl) InsertOnce(ctx context.Context, task *pb.Task) e
 		"endTime":    task.EndTime,
 		"isFinished": Unfinished,
 		"createTime": time.Now().Unix(),
+		//
 	})
 	return err
 }
