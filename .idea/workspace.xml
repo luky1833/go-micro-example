@@ -6,11 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f8942fef-9c33-4eb4-a02d-efdaea0bdb62" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go-todolist/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go-todolist/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go-todolist/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go-todolist/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go-todolist/task-srv/proto/task/task.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/go-todolist/task-srv/proto/task/task.pb.micro.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/go-todolist/task-srv/proto/task/task.proto" beforeDir="false" afterPath="$PROJECT_DIR$/go-todolist/task-srv/proto/task/task.proto" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go-todolist/task-srv/repository/task.go" beforeDir="false" afterPath="$PROJECT_DIR$/go-todolist/task-srv/repository/task.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go-todolist/task-srv/task-cli.go" beforeDir="false" afterPath="$PROJECT_DIR$/go-todolist/task-srv/task-cli.go" afterDir="false" />
     </list>

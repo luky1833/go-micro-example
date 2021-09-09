@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/registry"
 	"github.com/micro/go-micro/v2/registry/etcd"
@@ -47,7 +46,6 @@ func main() {
 
 	// 更新第一条记录生效
 	row := page.Rows[0]
-	fmt.Println(row.Id)
 	if _, err := taskService.Finished(context.Background(), &pb.Task{
 		Id:         row.Id,
 		IsFinished: repository.Finished,

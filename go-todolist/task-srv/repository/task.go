@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"fmt"
 	"github.com/pkg/errors"
 	pb "go-todolist/task-srv/proto/task"
 	"go.mongodb.org/mongo-driver/bson"
@@ -124,6 +123,5 @@ func (repo *TaskRepositoryImpl) Search(ctx context.Context, request *pb.SearchRe
 	if err := cursor.All(ctx, &rows); err != nil {
 		return nil, errors.WithMessage(err, "parse data")
 	}
-	fmt.Println(rows)
 	return rows, nil
 }
