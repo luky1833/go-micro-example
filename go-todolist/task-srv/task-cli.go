@@ -80,6 +80,8 @@ func main() {
 
 func insertTask(service pb.TaskService, body string, start, end int64) {
 	_, err := service.Create(context.Background(), &pb.Task{
+		// 这里先随便输入一个userId
+		UserId:    "10000",
 		Body:      body,
 		StartTime: start,
 		EndTime:   end,

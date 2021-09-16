@@ -52,7 +52,8 @@ func (repo *TaskRepositoryImpl) InsertOnce(ctx context.Context, task *pb.Task) e
 		"endTime":    task.EndTime,
 		"isFinished": Unfinished,
 		"createTime": time.Now().Unix(),
-		//
+		// 插入新任务时增加userId
+		"userId": task.UserId,
 	})
 	return err
 }
@@ -127,4 +128,18 @@ func (repo *TaskRepositoryImpl) Search(ctx context.Context, request *pb.SearchRe
 		return nil, errors.WithMessage(err, "parse data")
 	}
 	return rows, nil
+}
+
+func (repo TaskRepositoryImpl) FindById(ctx context.Context, id string) (*pb.Task, error) {
+	objectId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, err
+	}
+	result := repo.collection().FindOne(ctx, bson.M{"_id": objectId})
+	var task *pb.Task
+	task = &pb.Task{}
+	if err := result.Decode(task); err != nil {
+		return nil, errors.WithMessage(err, "search mongo")
+	}
+	return task, err
 }

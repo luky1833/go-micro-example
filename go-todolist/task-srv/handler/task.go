@@ -2,17 +2,27 @@ package handler
 
 import (
 	"context"
+	"github.com/micro/go-micro/v2"
 	"github.com/pkg/errors"
 	pb "go-todolist/task-srv/proto/task"
 	"go-todolist/task-srv/repository"
+	"log"
+)
+
+const (
+	// 任务完成消息的topic
+	TaskFinishedTopic = "finished"
 )
 
 type TaskHandler struct {
 	TaskRepository repository.TaskRepository
+	// 由go-micro封装，用于发送消息的接口，老版本叫micro.Publisher
+	TaskFinishedPubEvent micro.Event
 }
 
 func (t *TaskHandler) Create(ctx context.Context, task *pb.Task, resp *pb.EditResponse) error {
-	if task.Body == "" || task.StartTime <= 0 || task.EndTime <= 0 {
+	// 创建任务接口增加userId必填校验
+	if task.Body == "" || task.StartTime <= 0 || task.EndTime <= 0 || task.UserId == "" {
 		return errors.New("bad param")
 	}
 	if err := t.TaskRepository.InsertOnce(ctx, task); err != nil {
@@ -44,14 +54,25 @@ func (t *TaskHandler) Modify(ctx context.Context, task *pb.Task, response *pb.Ed
 	return nil
 }
 
-func (t *TaskHandler) Finished(ctx context.Context, task *pb.Task, response *pb.EditResponse) error {
-	if task.Id == "" || task.IsFinished != repository.Unfinished && task.IsFinished != repository.Finished {
+func (t *TaskHandler) Finished(ctx context.Context, req *pb.Task, response *pb.EditResponse) error {
+	if req.Id == "" || req.IsFinished != repository.Unfinished && req.IsFinished != repository.Finished {
 		return errors.New("bad param")
 	}
-	if err := t.TaskRepository.Finished(ctx, task); err != nil {
+	if err := t.TaskRepository.Finished(ctx, req); err != nil {
 		return err
 	}
 	response.Msg = "success"
+
+	//发送task完成消息
+	// 由于以下都是主业务之外的增强功能,出现异常只记录日志,不影响业务返回
+	if task, err := t.TaskRepository.FindById(ctx, req.Id); err != nil {
+		log.Print("[error]can`t send 'task finished' message ", err)
+	} else {
+		log.Print(task)
+		if err = t.TaskFinishedPubEvent.Publish(ctx, task); err != nil {
+			log.Print("[error] can`t send 'task finished' message ", err)
+		}
+	}
 	return nil
 }
 

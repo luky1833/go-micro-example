@@ -5,10 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f8942fef-9c33-4eb4-a02d-efdaea0bdb62" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/go-todolist/achievement-srv/main.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/go-todolist/achievement-srv/repository/achievement.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/go-todolist/achievement-srv/subscriber/achievement.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go-todolist/task-srv/proto/task/task.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/go-todolist/task-srv/proto/task/task.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go-todolist/task-srv/proto/task/task.proto" beforeDir="false" afterPath="$PROJECT_DIR$/go-todolist/task-srv/proto/task/task.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go-todolist/task-srv/handler/task.go" beforeDir="false" afterPath="$PROJECT_DIR$/go-todolist/task-srv/handler/task.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go-todolist/task-srv/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/go-todolist/task-srv/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go-todolist/task-srv/repository/task.go" beforeDir="false" afterPath="$PROJECT_DIR$/go-todolist/task-srv/repository/task.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go-todolist/task-srv/task-cli.go" beforeDir="false" afterPath="$PROJECT_DIR$/go-todolist/task-srv/task-cli.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,10 +64,19 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.modules.go.list.on.any.changes.was.set" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../src/Deploy-exporter" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../vm_controller_go" />
     <property name="restartRequiresConfirmation" value="false" />
   </component>
-  <component name="RunManager" selected="Go Build.go build go-todolist/task-srv">
+  <component name="RunManager" selected="Go Build.go build task-cli.go">
+    <configuration name="go build go-todolist/achievement-srv" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="go-micro-demo" />
+      <working_directory value="$PROJECT_DIR$/go-todolist" />
+      <kind value="PACKAGE" />
+      <package value="go-todolist/achievement-srv" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/go-todolist/achievement-srv/main.go" />
+      <method v="2" />
+    </configuration>
     <configuration name="go build go-todolist/task-srv" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="go-micro-demo" />
       <working_directory value="$PROJECT_DIR$/go-todolist" />
@@ -83,8 +96,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Build.go build go-todolist/task-srv" />
         <item itemvalue="Go Build.go build task-cli.go" />
+        <item itemvalue="Go Build.go build go-todolist/task-srv" />
+        <item itemvalue="Go Build.go build go-todolist/achievement-srv" />
       </list>
     </recent_temporary>
   </component>
