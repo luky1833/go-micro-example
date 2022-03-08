@@ -1,2 +1,2 @@
-# go-micro-demo
-go micro demo
+# go-micro-example
+go micro example
